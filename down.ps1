@@ -67,6 +67,7 @@
     New-Item $this.readmePth -Value $result;
   }
   [bool] createReadmeValue(){
+    [int] $headMonth=0;
     $nowYear=$this.year;
     $nowMonth=$this.month;
     $nowDay=$this.day;
@@ -83,7 +84,7 @@
         $nowDay=$this.day;  
         [string] $dailyLink=[string] $this.year+"_"+$this.month+"_"+$this.day+".md";
         [string] $forWeekdayStr = ([datetime]([string] $this.year+"/"+$this.month+"/"+$this.day)).ToString("ddd");
-        if($this.i -eq 0){
+        if(($this.i -eq 0) -and ($headMonth -ne $this.month)){
           [dailyProcess]::headMonth=[string] " [$($this.month)月](#$($this.month)月)";
           [dailyProcess]::dailyTable+="`n";
           [dailyProcess]::dailyTable+="`n";
@@ -92,6 +93,7 @@
           [dailyProcess]::dailyTable+="| 　日付　 | 　工数　 |";
           [dailyProcess]::dailyTable+="`n";
           [dailyProcess]::dailyTable+="| ------------- | ------------- |";
+          $headMonth=$this.month;
         }
         $this.dailyData= Get-Content $this.dailyPth  -Encoding UTF8;
         [string] $daily=$this.dailyData[0];
@@ -108,14 +110,17 @@
       $dayAdd=$dayDatatime.AddDays(-1);
       $this.day=$dayAdd.day;
       if($dayAdd.month -ne $this.month){
-        [dailyProcess]::headMonth=[string] " [$($this.month)月](#$($this.month)月)"+[dailyProcess]::headMonth;
-        [dailyProcess]::dailyTable+="`n";
-        [dailyProcess]::dailyTable+="`n";
-        [dailyProcess]::dailyTable+="# <span id='$($this.month)月'>$($this.month)月</span>";
-        [dailyProcess]::dailyTable+="`n";
-        [dailyProcess]::dailyTable+="| 　日付　 | 　工数　 |";
-        [dailyProcess]::dailyTable+="`n";
-        [dailyProcess]::dailyTable+="| ------------- | ------------- |";
+        if($headMonth -ne $this.month){
+          [dailyProcess]::headMonth=[string] " [$($this.month)月](#$($this.month)月)"+[dailyProcess]::headMonth;
+          [dailyProcess]::dailyTable+="`n";
+          [dailyProcess]::dailyTable+="`n";
+          [dailyProcess]::dailyTable+="# <span id='$($this.month)月'>$($this.month)月</span>";
+          [dailyProcess]::dailyTable+="`n";
+          [dailyProcess]::dailyTable+="| 　日付　 | 　工数　 |";
+          [dailyProcess]::dailyTable+="`n";
+          [dailyProcess]::dailyTable+="| ------------- | ------------- |";
+          $headMonth=$this.month;
+        }
         $this.month=$dayAdd.month;
         $this.year=$dayAdd.year;
       }
