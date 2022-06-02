@@ -1,4 +1,4 @@
-class dailyProcess{
+﻿class dailyProcess{
   static [string] $subtotal;
   static [string] $projectSubtotal;
   static [string] $head;
