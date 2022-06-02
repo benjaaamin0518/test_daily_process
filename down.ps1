@@ -108,8 +108,6 @@
       $dayAdd=$dayDatatime.AddDays(-1);
       $this.day=$dayAdd.day;
       if($dayAdd.month -ne $this.month){
-        $this.month=$dayAdd.month;
-        $this.year=$dayAdd.year;
         [dailyProcess]::headMonth=[string] " [$($this.month)月](#$($this.month)月)"+[dailyProcess]::headMonth;
         [dailyProcess]::dailyTable+="`n";
         [dailyProcess]::dailyTable+="`n";
@@ -118,6 +116,8 @@
         [dailyProcess]::dailyTable+="| 　日付　 | 　工数　 |";
         [dailyProcess]::dailyTable+="`n";
         [dailyProcess]::dailyTable+="| ------------- | ------------- |";
+        $this.month=$dayAdd.month;
+        $this.year=$dayAdd.year;
       }
     }
     return $true;
