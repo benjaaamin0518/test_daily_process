@@ -2,17 +2,17 @@ name: Create Readme & Project Files
 
 on:
   push:
-    branches: [main]
+    branches: [2025]
 
 jobs:
   build:
     runs-on: windows-2019
     steps:
-      # main ブランチをチェックアウトする
-      - name: checkout main
+      # 2025 ブランチをチェックアウトする
+      - name: checkout 2025
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: 2025
       # Readmeを作成する
       - name: Create Readme
         env:
@@ -20,10 +20,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH_NAME: ${{ steps.create_branch.outputs.branch_name }}
         run: |
-          git pull origin "main"
+          git pull origin "2025"
           powershell -NoProfile -ExecutionPolicy Unrestricted .\down.ps1
             git config --global user.email "actions@example.com"
             git config --global user.name "Create Readme & Project Files" 
           git add .
           git commit -m "ページ自動更新"
-          git push origin "main"
+          git push origin "2025"
